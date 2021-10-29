@@ -1,31 +1,32 @@
-currentBuild.displayName="Pipeline2-#"+BUILD_NUMBER
+currentBuild.displayName="learndevops-#"+BUILD_NUMBER
 pipeline {
-    agent {label 'Slave'}
-    environment {PATH = "/opt/maven/bin:$PATH"}
+    agent {
+        label 'slave'
+    }
+    environment {
+    PATH = "/opt/maven/bin:$PATH"
+    }
     stages {
         stage('Hello') {
             steps {
                 echo 'Hello World'
             }
         }
-        stage('checkout'){
+        stage('checkout') {
             steps {
-                checkout([$class: 'GitSCM',
-                branches: [[name: '*/master']],
-                extensions: [],
-                userRemoteConfigs: [[url: 'https://github.com/Narayanad419/hello-world-war.git']]])
+               checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], 
+               userRemoteConfigs: [[url: 'https://github.com/Narayanad419/hello-world-war.git']]])
             }
         }
-        stage('build'){
+        stage('Build') {
             steps {
-                sh '''mvn package'''
+               sh 'mvn clean package'
             }
         }
-        stage('deploy'){
+        stage('Deploy') {
             steps {
-                deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '',
-                url: 'http://3.109.219.27:8080/')],
-                contextPath: 'Hello', war: '**target/*.war'
+               deploy adapters: [tomcat8(credentialsId: 'Tomcat', path: '', 
+               url: 'http://13.232.48.23:8080/')], contextPath: 'helloworld', war: '**/target/*.war'
             }
         }
     }
