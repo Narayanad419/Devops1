@@ -1,5 +1,15 @@
+provider "aws" {
+  region  = "ap-south-1"
+}
 
-I am Naaham and i am namaha
-I am SatyaNarayana
+resource "aws_instance" "server" {
+    ami        = "ami-0108d6a82a783b352"
+    instance_type = "t2.micro"
+    subnet_id = "subnet-4fd51024"
+    security_groups = [ "sg-010a8c1fdca36f828" ]
+        key_name = "Win"
+    tags = {
+        Name = "terraform5"
+    }
 
-
+}
